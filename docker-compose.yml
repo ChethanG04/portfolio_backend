@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: Chetu@8431
+      MYSQL_DATABASE: portfolio_db
+      MYSQL_PASSWORD: Chetu@8431
+    ports:
+      - "3308:3306"  # Changed to 3307 (avoid clash on 3306)
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    container_name: django_container
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"  # This is correct
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
